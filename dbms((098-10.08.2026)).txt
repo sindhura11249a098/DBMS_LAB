@@ -1,0 +1,175 @@
+
+SQL*Plus: Release 11.2.0.1.0 Production on Mon Aug 10 04:32:59 2026
+
+Copyright (c) 1982, 2010, Oracle.  All rights reserved.
+
+Enter user-name: A098@db2021
+Enter password:
+
+Connected to:
+Oracle Database 11g Release 11.2.0.1.0 - Production
+
+SQL> select * from tab
+  2  ;
+
+TNAME                          TABTYPE  CLUSTERID
+------------------------------ ------- ----------
+STUDENT9                       TABLE
+STUDENT8                       TABLE
+STUDENT10                      TABLE
+STUDENT                        TABLE
+STU4                           TABLE
+STU3                           TABLE
+STU                            TABLE
+DEPARTMENT                     TABLE
+COURSE                         TABLE
+
+9 rows selected.
+
+
+SQL> create table college(
+  2  stuid number,
+  3  name varchar2(20),
+  4  age number,
+  5  email varchar2(30),
+  6  dept varchar2(15)
+  7  );
+
+Table created.
+
+SQL> desc student;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ REG_NO                                             VARCHAR2(15)
+ NAME                                               CHAR(10)
+ YEAR                                               NUMBER(3)
+ DOB                                                DATE
+ COURSE                                             CHAR(5)
+
+SQL> alter table college ADD CONSTRAINT pk_college PRIMARY KEY(stuid);
+
+Table altered.
+
+SQL> desc college;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ STUID                                     NOT NULL NUMBER
+ NAME                                               VARCHAR2(20)
+ AGE                                                NUMBER
+ EMAIL                                              VARCHAR2(30)
+ DEPT                                               VARCHAR2(15)
+
+
+
+SQL> alter table college ADD CONSTRAINT uq_email UNIQUE(email);
+
+Table altered.
+
+SQL> desc college;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ STUID                                     NOT NULL NUMBER
+ NAME                                               VARCHAR2(20)
+ AGE                                                NUMBER
+ EMAIL                                              VARCHAR2(30)
+ DEPT                                               VARCHAR2(15)
+
+SQL> alter table college ADD CONSTRAINT chk_age CHECK(age<=18);
+
+Table altered.
+
+SQL> alter table college MODIFY dept DEFAULT 'CSE';
+
+Table altered.
+
+SQL> create table dept(
+  2  deptid number,
+  3  deptname varchar2(10)
+  4  );
+
+Table created.
+
+
+
+SQL> alter table dept ADD CONSTRAINT pk_dept PRIMARY KEY(deptid);
+
+Table altered.
+
+SQL> alter table college ADD deptid NUMBER;
+
+Table altered.
+
+
+
+SQL> alter table college ADD CONSTRAINT FK_COLLEGE_DEPT FOREIGN KEY (deptid) REFERENCES dept (deptid);
+
+Table altered.
+
+SQL> insert into dept values(01, 'cse');
+
+1 row created.
+
+SQL> insert into dept values(02, 'ece');
+
+1 row created.
+
+SQL> insert into dept values(03, 'mech');
+
+1 row created.
+
+SQL> select * from dept;
+
+    DEPTID DEPTNAME
+---------- ----------
+         1 cse
+         2 ece
+         3 mech
+
+
+SQL> insert into college values(001, 'sindhu', 16 , 'sindhu@gmail.com', 'cse', 1);
+
+1 row created.
+
+SQL> insert into college values(002, 'sahithi', 15 , 'sahithi@gmail.com', 'cse', 2);
+
+1 row created.
+
+SQL> insert into college values(003, 'sri', 15 , 'sri@gmail.com', 'cse', 3);
+
+1 row created.
+
+
+SQL> insert into college values(004, 'sanju', 17 , 'sanju@gmail.com', 'mech', 3);
+
+1 row created.
+
+SQL> select * from dept;
+
+    DEPTID DEPTNAME
+---------- ----------
+         1 cse
+         2 ece
+         3 mech
+
+SQL> select * from college;
+
+     STUID NAME                        AGE EMAIL
+---------- -------------------- ---------- ------------------------------
+DEPT                DEPTID
+--------------- ----------
+         1 sindhu                       16 sindhu@gmail.com
+cse                      1
+
+         2 sahithi                      15 sahithi@gmail.com
+cse                      2
+
+         3 sri                          15 sri@gmail.com
+cse                      3
+
+
+     STUID NAME                        AGE EMAIL
+---------- -------------------- ---------- ------------------------------
+DEPT                DEPTID
+--------------- ----------
+         4 sanju                        17 sanju@gmail.com
+mech                     3

@@ -1,0 +1,196 @@
+SQL*Plus: Release 11.2.0.1.0 Production on Mon Jul 27 03:14:45 2026
+
+Copyright (c) 1982, 2010, Oracle.  All rights reserved.
+
+Enter user-name: A098@db2021
+Enter password:
+
+Connected to:
+Oracle Database 11g Release 11.2.0.1.0 - Production
+
+SQL> create table student(
+  2  reg_no varchar2(9),
+  3  name char(10),
+  4  year number(3),
+  5  dob date,
+  6  course char(5));
+
+Table created.
+
+SQL> desc student;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ REG_NO                                             VARCHAR2(9)
+ NAME                                               CHAR(10)
+ YEAR                                               NUMBER(3)
+ DOB                                                DATE
+ COURSE                                             CHAR(5)
+
+SQL> create table stu as select * from student;
+
+Table created.
+
+SQL> desc stu;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ REG_NO                                             VARCHAR2(9)
+ NAME                                               CHAR(10)
+ YEAR                                               NUMBER(3)
+ DOB                                                DATE
+ COURSE                                             CHAR(5)
+
+SQL> create table stu1 as select reg_no,name,course from student;
+
+Table created.
+
+SQL> desc stu1
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ REG_NO                                             VARCHAR2(9)
+ NAME                                               CHAR(10)
+ COURSE                                             CHAR(5)
+
+SQL> select * from student;
+
+no rows selected
+
+SQL> insert into student values('11249a098','sindhu',3,'15-may-07','cse');
+
+1 row created.
+
+SQL> select * from student;
+
+REG_NO    NAME             YEAR DOB       COURS
+--------- ---------- ---------- --------- -----
+11249a098 sindhu              3 15-MAY-07 cse
+
+SQL> create table stu2 as select * from student
+  2  ;
+
+Table created.
+
+SQL> select* from stu2;
+
+REG_NO    NAME             YEAR DOB       COURS
+--------- ---------- ---------- --------- -----
+11249a098 sindhu              3 15-MAY-07 cse
+
+SQL> create table stu3 as select * from student where 2<1;
+
+Table created.
+
+
+SQL> select * from stu3;
+
+no rows selected
+
+SQL> desc stu3;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ REG_NO                                             VARCHAR2(9)
+ NAME                                               CHAR(10)
+ YEAR                                               NUMBER(3)
+ DOB                                                DATE
+ COURSE                                             CHAR(5)
+
+SQL> insert into student(reg_no,name) values('98','samhi');
+
+1 row created.
+
+SQL> select * from student;
+
+REG_NO    NAME             YEAR DOB       COURS
+--------- ---------- ---------- --------- -----
+11249a098 sindhu              3 15-MAY-07 cse
+98        samhi
+
+SQL> alter table student modify reg_no varchar2(15);
+
+Table altered.
+
+SQL> desc student;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ REG_NO                                             VARCHAR2(15)
+ NAME                                               CHAR(10)
+ YEAR                                               NUMBER(3)
+ DOB                                                DATE
+ COURSE                                             CHAR(5)
+
+SQL> select* from tab;
+
+TNAME                          TABTYPE  CLUSTERID
+------------------------------ ------- ----------
+STUDENT                        TABLE
+STU3                           TABLE
+STU2                           TABLE
+STU1                           TABLE
+STU                            TABLE
+
+SQL> drop table stu1;
+
+Table dropped.
+
+SQL> select* from tab;
+
+TNAME                          TABTYPE  CLUSTERID
+------------------------------ ------- ----------
+STUDENT                        TABLE
+STU3                           TABLE
+STU2                           TABLE
+STU                            TABLE
+BIN$AM1TclwdR3GXS8pE/BBHxA==$0 TABLE
+
+SQL> rename stu2 to stu4;
+
+Table renamed.
+
+SQL> select* from tab;
+
+TNAME                          TABTYPE  CLUSTERID
+------------------------------ ------- ----------
+STUDENT                        TABLE
+STU4                           TABLE
+STU3                           TABLE
+STU                            TABLE
+BIN$AM1TclwdR3GXS8pE/BBHxA==$0 TABLE
+
+SQL> desc student;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ REG_NO                                             VARCHAR2(15)
+ NAME                                               CHAR(10)
+ YEAR                                               NUMBER(3)
+ DOB                                                DATE
+ COURSE                                             CHAR(5)
+
+SQL> insert into student values ('&reg_no','&name',&year,'&dob','&course');
+Enter value for reg_no: 11249a075
+Enter value for name: likki
+Enter value for year: 4
+Enter value for dob: 17-mar-05
+Enter value for course: cse
+old   1: insert into student values ('&reg_no','&name',&year,'&dob','&course')
+new   1: insert into student values ('11249a075','likki',4,'17-mar-05','cse')
+
+1 row created.
+
+SQL> /
+Enter value for reg_no: 088
+Enter value for name: hhh
+Enter value for year: 6
+Enter value for dob: 12-jul-08
+Enter value for course: eee
+old   1: insert into student values ('&reg_no','&name',&year,'&dob','&course')
+new   1: insert into student values ('088','hhh',6,'12-jul-08','eee')
+
+1 row created.
+
+SQL> select* from student;
+
+REG_NO          NAME             YEAR DOB       COURS
+--------------- ---------- ---------- --------- -----
+11249a098       sindhu              3 15-MAY-07 cse
+98              samhi
+11249a075       likki               4 17-MAR-05 cse
+088             hhh                 6 12-JUL-08 eee
