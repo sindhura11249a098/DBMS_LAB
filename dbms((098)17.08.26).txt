@@ -1,0 +1,112 @@
+SQL*Plus: Release 11.2.0.1.0 Production on Mon Aug 17 03:10:37 2026
+
+Copyright (c) 1982, 2010, Oracle.  All rights reserved.
+
+Enter user-name: A098@db2021
+Enter password:
+
+Connected to:
+Oracle Database 11g Release 11.2.0.1.0 - Production
+
+SQL> create table customer(
+  2  cust_id number PRIMARY KEY,
+  3  cust_name varchar2(10),
+  4  city varchar2(10),
+  5  ref_id number
+  6  );
+
+Table created.
+
+SQL> create table orders(
+  2  order_id number PRIMARY KEY,
+  3  cust_id number,
+  4  product varchar2(15),
+  5  amount number
+  6  );
+
+Table created.
+
+SQL> desc customer;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ CUST_ID                                   NOT NULL NUMBER
+ CUST_NAME                                          VARCHAR2(10)
+ CITY                                               VARCHAR2(10)
+ REF_ID                                             NUMBER
+
+SQL> insert into customer values(1, 'wamiqa','nyk',NULL);
+
+1 row created.
+
+SQL> insert into customer values(2, 'lavanya', 'morraco',1);
+
+1 row created.
+
+SQL> insert into customer values(3, 'ellis' , 'paris', 1);
+
+1 row created.
+
+SQL> insert into customer values(4, 'ethan' , 'chicago', 2);
+
+1 row created.
+
+SQL> insert into orders values(101,1, 'laptp' ,290000);
+
+1 row created.
+
+SQL> insert into orders values(102,2, 'AC' ,29000);
+
+1 row created.
+
+SQL> insert into orders values(103,3, 'Tab' ,9000);
+
+1 row created.
+
+SQL> insert into orders values(104,4, 'TV' ,90000);
+
+1 row created.
+
+SQL> insert into orders values(105,5, 'Watch' ,76000);
+
+1 row created.
+
+SQL> select c.cust_name,o.product,o.amount from customer c INNER JOIN orders o ON c.cust_id=o.cust_id;
+
+CUST_NAME  PRODUCT             AMOUNT
+---------- --------------- ----------
+wamiqa     laptp               290000
+lavanya    AC                   29000
+ellis      Tab                   9000
+ethan      TV                   90000
+
+SQL> select c.cust_name,o.product,o.amount from customer c,orders o where c.cust_id=o.cust_id;
+
+CUST_NAME  PRODUCT             AMOUNT
+---------- --------------- ----------
+wamiqa     laptp               290000
+lavanya    AC                   29000
+ellis      Tab                   9000
+ethan      TV                   90000
+
+SQL> select c.cust_name,o.product,o.amount from customer c FULL OUTER JOIN orders o on c.cust_id=o.cust_id;
+
+CUST_NAME  PRODUCT             AMOUNT
+---------- --------------- ----------
+wamiqa     laptp               290000
+lavanya    AC                   29000
+ellis      Tab                   9000
+ethan      TV                   90000
+           Watch                76000
+
+
+SQL> select c1.cust_name as customer,
+  2  c2.cust_name as reffered_by
+  3  from customer c1
+  4  join customer c2
+  5  on c1.ref_id=c2.cust_id;
+
+CUSTOMER   REFFERED_B
+---------- ----------
+ellis      wamiqa
+lavanya    wamiqa
+ethan      lavanya
