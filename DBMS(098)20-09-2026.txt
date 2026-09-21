@@ -1,0 +1,131 @@
+
+SQL*Plus: Release 11.2.0.1.0 Production on Mon Sep 21 09:59:06 2026
+
+Copyright (c) 1982, 2010, Oracle.  All rights reserved.
+
+Enter user-name: A075@db2021
+Enter password:
+
+Connected to:
+Oracle Database 11g Release 11.2.0.1.0 - Production
+
+
+SQL> create table stu1 (
+  2  stu1_id number(5) PRIMARY KEY,
+  3  stu1_name varchar2(7),
+  4  department varchar2(4),
+  5  marks number(3)
+  6  );
+
+Table created.
+
+SQL> insert into stu1 values(101,'arun','CSE',87);
+
+1 row created.
+
+SQL> insert into stu1 values(102,'arjun','ECE',97);
+
+1 row created.
+
+SQL> insert into stu1 values(103,'ayaan','CSE',98);
+
+1 row created.
+
+SQL> insert into stu1 values(104,'rayan','EEE',88);
+
+1 row created.
+
+
+SQL> create VIEW CSE_stu1 as select stu1_id,stu1_name,marks FROM stu1 where department='CSE';
+
+View created.
+
+SQL> select * from CSE_stu1;
+
+   STU1_ID STU1_NA      MARKS
+---------- ------- ----------
+       101 arun            87
+       103 ayaan           98
+
+
+SQL> create SEQUENCE STUID_SEQ
+  2  start with 105
+  3  increment by 1
+  4  minvalue 105
+  5  maxvalue 999
+  6  nocycle
+  7  nocache;
+
+Sequence created.
+
+SQL> select STUID_SEQ.NEXTVAL from dual;
+
+   NEXTVAL
+----------
+       105
+
+SQL> select STUID_SEQ.NEXTVAL from dual;
+
+   NEXTVAL
+----------
+       106
+
+SQL> insert into stu1 values(STUID_SEQ.NEXTVAL,'laxman','ECE',88);
+
+1 row created.
+
+SQL> select * from stu1;
+
+   STU1_ID STU1_NA DEPA      MARKS
+---------- ------- ---- ----------
+       101 arun    CSE          87
+       102 arjun   ECE          97
+       103 ayaan   CSE          98
+       104 rayan   EEE          88
+       107 laxman  ECE          88
+
+
+SQL> create INDEX IDX_STUDENT_NAME on stu1(stu1_name);
+
+Index created.
+
+SQL> SELECT INDEX_NAME,TABLE_NAME FROM USER_INDEXES WHERE TABLE_NAME='STU1';
+
+INDEX_NAME                     TABLE_NAME
+------------------------------ ------------------------------
+SYS_C0033763                   STU1
+IDX_STUDENT_NAME               STU1
+
+SQL> insert into stu1 values(108,'raman','MECH',89);
+
+1 row created.
+
+SQL> SAVEPOINT SP1;
+
+Savepoint created.
+
+SQL> insert into stu1 values(109,'trigun','CSE',87);
+
+1 row created.
+
+SQL> ROLLBACK TO SP1;
+
+Rollback complete.
+
+SQL> select*from stu1;
+
+   STU1_ID STU1_NA DEPA      MARKS
+---------- ------- ---- ----------
+       101 arun    CSE          87
+       102 arjun   ECE          97
+       103 ayaan   CSE          98
+       104 rayan   EEE          88
+       107 laxman  ECE          88
+       108 raman   MECH         89
+
+6 rows selected.
+
+SQL> commit;
+
+Commit complete.
+
